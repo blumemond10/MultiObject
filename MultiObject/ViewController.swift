@@ -1,10 +1,4 @@
-//
-//  ViewController.swift
-//  MultiObject
-//
-//  Created by Nラボ on 2020/07/13.
-//  Copyright © 2020 naokisakano. All rights reserved.
-//
+
 
 import UIKit
 import SceneKit
@@ -17,6 +11,9 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.sceneView = ARSCNView(frame:self.view.frame)
+        self.view.addSubview(self.sceneView)
+        
         // Set the view's delegate
         sceneView.delegate = self
         
@@ -24,7 +21,45 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         sceneView.showsStatistics = true
         
         // Create a new scene
-        let scene = SCNScene(named: "art.scnassets/ship.scn")!
+
+        let scene = SCNScene()
+        
+        let textGeometry = SCNText(string: "Hello Swift", extrusionDepth: 1.0)
+                let textNode = SCNNode(geometry: textGeometry)
+                    textNode.position = SCNVector3(0,0.1,-0.6)
+                    textNode.scale  = SCNVector3(0.02,0.02,0.02)
+        
+        
+        let box = SCNBox(width: 0.2, height: 0.2, length: 0.2, chamferRadius:0)
+            let boxMaterial = SCNMaterial()
+            //boxMaterial.diffuse.contents = UIColor.blue
+        boxMaterial.diffuse.contents = UIImage(named: "art.scnassets/brick.jpg")!
+                let node = SCNNode()
+                    node.geometry = box
+                    node.geometry?.materials = [boxMaterial]
+        node.position = SCNVector3(-0.5,0.2,-0.5)
+       
+        let sphere = SCNSphere(radius: 0.2)
+            let sphereMaterial = SCNMaterial()
+            //sphereMaterial.diffuse.contents = UIColor.green
+        sphereMaterial.diffuse.contents = UIImage(named: "art.scnassets/earthmap.jpeg")!
+            textGeometry.firstMaterial?.diffuse.contents = UIColor.orange
+                let sphereNode = SCNNode()
+                           sphereNode.geometry = sphere
+                           sphereNode.geometry?.materials = [sphereMaterial]
+                           sphereNode.position = SCNVector3(0.4,0.1,-1)
+                
+        scene.rootNode.addChildNode(sphereNode)
+        scene.rootNode.addChildNode(textNode)
+        scene.rootNode.addChildNode(node)
+        
+        
+        
+        
+       
+        
+        
+        
         
         // Set the scene to the view
         sceneView.scene = scene
